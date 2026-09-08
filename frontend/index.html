@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabletop Games Club</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+<header class="navbar">
+  <div class="nav-brand">
+    <img src="assets/club-logo.png" alt="Tabletop Games Club Logo" class="nav-logo" />
+    <span>Tabletop Club</span>
+  </div>
+  <nav class="nav-links">
+    <button class="nav-btn active" onclick="switchTab('catalog-page')">Game Catalog</button>
+    <button class="nav-btn" onclick="switchTab('login-page')">Portal Login</button>
+    <button class="nav-btn helper-only hidden" onclick="switchTab('helper-page')">Helper Portal</button>
+    <button class="nav-btn admin-only hidden" onclick="switchTab('admin-page')">Admin Dashboard</button>
+    <button class="nav-btn auth-only hidden" onclick="logout()">Logout</button>
+  </nav>
+</header>
+  <main class="container">
+
+    <!-- PAGE 1: GAME CATALOG -->
+    <section id="catalog-page" class="page-section active">
+      <h2>Available Board Games</h2>
+      <div id="game-grid" class="grid-container">
+        <!-- Dynamic Game Tiles Rendered via JavaScript -->
+      </div>
+    </section>
+
+    <!-- PAGE 2: LOGIN PORTAL -->
+    <section id="login-page" class="page-section">
+      <div class="card form-card">
+        <h2>Helper / Admin Login</h2>
+        <form id="login-form">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="login-username" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-password" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- PAGE 3: HELPER PORTAL -->
+    <section id="helper-page" class="page-section">
+      <h2>Helper Portal</h2>
+      
+      <!-- Time Slot Filter -->
+      <div class="filter-bar">
+        <label for="helper-timeslot-filter">Filter Requests by Time Slot:</label>
+        <select id="helper-timeslot-filter" onchange="loadHelperRequests()">
+          <option value="">All Time Slots</option>
+          <option value="12:50-2:30">12:50 - 2:30</option>
+          <option value="3:00-4:40">3:00 - 4:40</option>
+          <option value="5:00-6:40">5:00 - 6:40</option>
+        </select>
+      </div>
+
+      <div class="portal-grid">
+        <!-- Pending Deliveries Queue -->
+        <div class="card">
+          <h3>Pending Deliveries</h3>
+          <div id="pending-deliveries-list" class="request-list"></div>
+        </div>
+
+        <!-- Pending Returns Queue -->
+        <div class="card">
+          <h3>Pending Returns</h3>
+          <div id="pending-returns-list" class="request-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 4: ADMIN DASHBOARD -->
+    <section id="admin-page" class="page-section">
+      <h2>Admin Dashboard</h2>
+      
+      <div class="portal-grid">
+        <!-- Add New Game -->
+        <div class="card">
+          <h3>Add New Game to Database</h3>
+          <form id="add-game-form">
+            <div class="form-group">
+              <label>Game Title</label>
+              <input type="text" id="game-title" required />
+            </div>
+            <div class="form-group">
+              <label>Image URL</label>
+              <input type="url" id="game-image" required placeholder="https://..." />
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="game-desc" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Add Game</button>
+          </form>
+        </div>
+
+        <!-- Manage Helper Accounts -->
+        <div class="card">
+          <h3>Create Helper Account</h3>
+          <form id="add-helper-form">
+            <div class="form-group">
+              <label>Helper Username</label>
+              <input type="text" id="helper-username" required />
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="helper-password" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Create Helper</button>
+          </form>
+
+          <hr class="divider" />
+
+          <h3>Existing Helpers</h3>
+          <div id="helpers-list" class="request-list"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: CHECKOUT FORM -->
+  <div id="checkout-modal" class="modal">
+    <div class="modal-content card">
+      <span class="close-btn" onclick="closeCheckoutModal()">&times;</span>
+      <h3 id="checkout-game-title">Checkout Game</h3>
+      <form id="checkout-form">
+        <input type="hidden" id="checkout-game-id" />
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="student-name" required />
+        </div>
+        <div class="form-group">
+          <label>Student ID</label>
+          <input type="text" id="student-id" required />
+        </div>
+        <div class="form-group">
+          <label>Classroom Location</label>
+          <input type="text" id="classroom-location" placeholder="e.g. Room B204" required />
+        </div>
+        <div class="form-group">
+          <label>Time Slot Requirement</label>
+          <select id="time-slot" required>
+            <option value="12:50-2:30">12:50 PM - 2:30 PM</option>
+            <option value="3:00-4:40">3:00 PM - 4:40 PM</option>
+            <option value="5:00-6:40">5:00 PM - 6:40 PM</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Checkout Request</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
