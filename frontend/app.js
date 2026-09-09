@@ -1,7 +1,7 @@
 // Base API URL configuration - dynamically uses hosted backend or fallback
 const API_URL = window.location.hostname === 'localhost' 
   ? 'http://localhost:5000/api' 
-  : 'https://your-api-domain.onrender.com/api'; // Replace with your backend host domain
+  : 'https://tabletop-club-checkout-backen.onrender.com/api';
 
 let currentUser = JSON.parse(localStorage.getItem('user')) || null;
 let authToken = localStorage.getItem('token') || null;
