@@ -24,17 +24,17 @@ body {
 .nav-brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem; /* Space between logo and text */
+  gap: 0.75rem; 
   font-size: 1.25rem;
   font-weight: bold;
   color: white;
 }
 
 .nav-logo {
-  height: 40px;        /* Fixed height to prevent stretching navbar */
-  width: auto;         /* Maintains natural aspect ratio */
+  height: 40px;        
+  width: auto;         
   object-fit: contain;
-  border-radius: 6px;  /* Optional: soft corners */
+  border-radius: 6px;  
 }
 
 .navbar {
@@ -46,9 +46,9 @@ body {
   color: white;
 }
 
-.nav-brand {
-  font-size: 1.25rem;
-  font-weight: bold;
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .nav-btn {
@@ -59,6 +59,8 @@ body {
   font-size: 0.95rem;
   cursor: pointer;
   border-radius: 4px;
+  /* Touch target optimization */
+  min-height: 44px; 
 }
 
 .nav-btn.active, .nav-btn:hover {
@@ -152,20 +154,22 @@ body {
 
 .form-group input, .form-group select, .form-group textarea {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.75rem 0.5rem; /* Taller padding for easier tapping */
   border: 1px solid var(--border-color);
   border-radius: 4px;
+  font-size: 1rem; /* Prevents iOS Safari from zooming in on inputs */
 }
 
 /* Buttons */
 .btn {
   width: 100%;
-  padding: 0.6rem;
+  padding: 0.75rem; /* Taller touch targets */
   border: none;
   border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
   margin-top: 0.5rem;
+  font-size: 1rem;
 }
 
 .btn-primary { background-color: var(--primary-color); color: white; }
@@ -203,12 +207,14 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
+  z-index: 1000; /* Ensure modal stays on top */
 }
 
 .modal-content {
   position: relative;
-  width: 100%;
+  width: 90%; /* Changed from 100% to leave a gap on edges */
   max-width: 450px;
+  margin: 1rem; /* Prevent touching the top/bottom on small screens */
 }
 
 .close-btn {
@@ -216,4 +222,45 @@ body {
   top: 10px; right: 15px;
   font-size: 1.5rem;
   cursor: pointer;
+  padding: 0.5rem; /* Larger tap area for the X */
+}
+
+/* =========================================
+   MOBILE OPTIMIZATION (MEDIA QUERIES)
+   ========================================= */
+@media screen and (max-width: 768px) {
+  
+  /* Stack the navigation bar vertically */
+  .navbar {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  /* Wrap the navigation buttons like pill-tags */
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .nav-btn {
+    flex: 1 1 calc(50% - 0.5rem); /* Makes buttons take up half the screen width */
+    text-align: center;
+  }
+
+  /* Reduce padding on the main screen so it doesn't waste space */
+  .container {
+    padding: 1rem;
+  }
+
+  /* Force the Helper and Admin dashboards into a single column */
+  .portal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Make game cards slightly smaller on very small phones */
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
 }
