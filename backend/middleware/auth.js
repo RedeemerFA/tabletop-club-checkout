@@ -1,21 +1,18 @@
-const router = require('express').Router();
-const Game = require('../models/Game');
-const auth = require('../middleware/auth'); // Import auth middleware
+const jwt = require('jsonwebtoken');
 
-// Public: Anyone can view games
-router.get('/', async (req, res) => {
-  const games = await Game.find();
-  res.json(games);
-});
+module.exports = function (req, res, next) {
+  // Get token from header
+  const token = req.header('x-auth-token');
 
-// Protected: Only logged-in Admin/Helpers can add games
-router.post('/', auth, async (req, res) => {
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ error: 'Access denied. Admins only.' });
+  if (!token) {
+    return res.status(401).json({ msg: 'No token, authorization denied' });
   }
-  const newGame = new Game(req.body);
-  await newGame.save();
-  res.status(201).json(newGame);
-});
 
-module.exports = router;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded.user || decoded;
+    next();
+  } catch (err) {
+    res.status(401).json({ msg: 'Token is not valid' });
+  }
+};
